@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="cycleA" class="com.wenyao.springanaylize.service.CycleA">
+        <!--<constructor-arg index="0" ref="cycleB"/>无法解决循环依赖问题-->
+        <property name="cycleB" ref="cycleB"/>
+    </bean>
+
+
+    <bean id="cycleB" class="com.wenyao.springanaylize.service.CycleB">
+        <!--<constructor-arg index="0" ref="cycleA"/>-->
+        <property name="cycleA" ref="cycleA"/>
+    </bean>
+
+    <bean id="cycleAFactoryBean" class="com.wenyao.springanaylize.service.CycleAFactoryBean">
+    </bean>
+</beans>
