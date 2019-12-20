@@ -16,4 +16,19 @@
 
     <bean id="cycleAFactoryBean" class="com.wenyao.springanaylize.service.CycleAFactoryBean">
     </bean>
+
+    <bean id="lookupMethodTest" class="com.wenyao.springanaylize.lookupdemo.LookupMethodTest">
+        <lookup-method name="getBean" bean="student"/>
+    </bean>
+
+    <bean id="teacher" class="com.wenyao.springanaylize.lookupdemo.Teacher">
+    </bean>
+
+    <bean id="student" class="com.wenyao.springanaylize.lookupdemo.Student"></bean>
+
+    <bean id="replaceMethodTest" class="com.wenyao.springanaylize.replacedemo.ReplaceMethodTest">
+        <replaced-method name="message" replacer="replaceClass"></replaced-method>
+    </bean>
+
+    <bean id="replaceClass" class="com.wenyao.springanaylize.replacedemo.ReplaceClass"></bean>
 </beans>

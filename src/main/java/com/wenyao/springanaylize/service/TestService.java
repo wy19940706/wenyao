@@ -1,7 +1,8 @@
 package com.wenyao.springanaylize.service;
 
-import org.springframework.stereotype.Component;
-
-@Component
+// @Component
 public class TestService {
+    public void test() {
+        System.out.println("test");
+    }
 }
