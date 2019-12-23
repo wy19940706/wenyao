@@ -3,9 +3,7 @@ package com.wenyao.springanaylize.demo;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.wenyao.springanaylize.service.ApplicationContextConfig;
-import com.wenyao.springanaylize.service.TestService;
-
-import cn.hutool.core.lang.Console;
+import com.wenyao.springanaylize.service.CityService;
 
 /**
  * bean实例化过程分析demo
@@ -18,10 +16,19 @@ public class BeanInitDemo {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(ApplicationContextConfig.class);
-        Console.log(applicationContext.getBean(TestService.class));
 
-        TestService bean = (TestService) applicationContext.getBean("cityService");
-        bean.test();
+        // 自定义循环依赖标志
+        // applicationContext.register(ApplicationContextConfig.class);
+        //
+        // AbstractAutowireCapableBeanFactory beanFactory =
+        // (AbstractAutowireCapableBeanFactory) applicationContext.getBeanFactory();
+        // beanFactory.setAllowCircularReferences(Boolean.FALSE);
+        //
+        // applicationContext.refresh();
+
+        CityService cityService = (CityService) applicationContext.getBean("cityService");
+        // cityService.query();
+        // bean.test();
         // QueryInterface queryInterface = applicationContext.getBean(QueryInterface.class);
         // queryInterface.query();
         // Annotation annotation = applicationContext.getBean(Annotation.class);
