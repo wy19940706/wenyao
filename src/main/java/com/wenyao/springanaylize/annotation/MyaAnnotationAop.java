@@ -1,6 +1,7 @@
 package com.wenyao.springanaylize.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import cn.hutool.core.util.ObjectUtil;
+
 /**
  * Created by Think on 2019/2/18
  */
@@ -25,8 +28,8 @@ public class MyaAnnotationAop {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyaAnnotationAop.class);
 
-    // @Pointcut("@args(com.wenyao.springanaylize.annotation.MyAnnotation)")
-    @Pointcut("execution( * *(.., @com.wenyao.springanaylize.annotation.MyAnnotation (*), ..))")
+    // @Pointcut("@args(com.wenyao.springanaylize.annotation.IdExist)")
+    @Pointcut("execution( * *(.., @com.wenyao.springanaylize.annotation.IdExist (*), ..))")
     public void pointCut() {
 
     }
@@ -36,12 +39,23 @@ public class MyaAnnotationAop {
         try {
             Method proxyMethod = ((MethodSignature) joinPoint.getSignature()).getMethod();
             Annotation[][] parameterAnnotations = proxyMethod.getParameterAnnotations();
+            boolean flag = false;
             for (int i = 0; i < joinPoint.getArgs().length; i++) {
                 Object paramter = joinPoint.getArgs()[i];
                 for (Annotation annotation : parameterAnnotations[i]) {
-                    if (annotation != null) {
-
+                    if (annotation != null && annotation.annotationType() == IdExist.class) {
+                        Field idField = paramter.getClass().getDeclaredField("id");
+                        idField.setAccessible(true);
+                        Long id = (Long) idField.get(paramter);
+                        if (ObjectUtil.isNotNull(id)) {
+                            flag = true;
+                            System.out.println(id);
+                            break;
+                        }
                     }
+                }
+                if (flag) {
+                    break;
                 }
             }
             Method targetMethod =
@@ -59,5 +73,21 @@ public class MyaAnnotationAop {
         } catch (Throwable throwable) {
             LOGGER.error("有异常发生");
         }
+    }
+
+    public static void main(String[] args) {
+        boolean flag = false;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (j == 0) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+        System.out.println();
     }
 }

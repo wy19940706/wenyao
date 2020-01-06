@@ -26,7 +26,7 @@ public class BeanInitDemo {
         //
         // applicationContext.refresh();
 
-        CityService cityService = (CityService) applicationContext.getBean("cityService");
+        CityService cityService = applicationContext.getBean(CityService.class);
         // cityService.query();
         // bean.test();
         // QueryInterface queryInterface = applicationContext.getBean(QueryInterface.class);

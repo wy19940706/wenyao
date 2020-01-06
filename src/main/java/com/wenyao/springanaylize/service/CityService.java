@@ -3,12 +3,20 @@ package com.wenyao.springanaylize.service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
-// @Component("cityService")
-public class CityService implements InitializingBean, DisposableBean {
+import com.wenyao.springanaylize.TestA;
+
+@Component("cityService")
+public class CityService implements City, InitializingBean, DisposableBean, ApplicationContextAware, BeanFactoryAware {
 
     @Autowired
     private TestService testService;
@@ -47,5 +55,21 @@ public class CityService implements InitializingBean, DisposableBean {
 
     public void customerDestory() {
         System.out.println("customerDestory");
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        applicationContext.getBean(TestService.class);
+        System.out.println(applicationContext);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        beanFactory.getBean(TestA.class);
+    }
+
+    @Override
+    public void printCity() {
+        System.out.println("this is chengdu");
     }
 }
